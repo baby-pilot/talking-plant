@@ -3,11 +3,11 @@ Implements speaking capability for the plant via bluetooth
 '''
 
 from gtts import gTTS
-# import pygaame
+# import pygame
 import time
 from playsound import playsound
 
-pygame.init()
+# pygame.init()
 
 
 tts = gTTS("hello, I am raspberry pi 4. This is a test with Google Text to speech (gTTS)")
