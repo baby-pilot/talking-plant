@@ -14,14 +14,10 @@ import vlc
 tts = gTTS("hello, I am raspberry pi 4. This is a test with Google Text to speech (gTTS)")
 tts.save("hello.mp3")
 # playsound("./hello.mp3")
-p = vlc.MediaPlayer("hello.mp3")
-p.play()
-time.sleep(30)
-p.stop()
-# alert_sound = pygame.mixer.Sound("hello.mp3")
-# alert_sound.play()
+player = vlc.MediaPlayer("hello.mp3")
+player.play()
+while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
+    time.sleep(1)  # check every second whether audio is still playing
 
-# # wait for sound to finish playing
-# time.sleep(alert_sound.get_length())
-
-# use mpg123 on rasp pi to play the file above
+player.stop()
+# can use mpg123 on rasp pi to play the file above manually from command line
