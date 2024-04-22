@@ -5,14 +5,19 @@ Implements speaking capability for the plant via bluetooth
 from gtts import gTTS
 # import pygame
 import time
-from playsound import playsound
+# from playsound import playsound
+import vlc
 
 # pygame.init()
 
 
 tts = gTTS("hello, I am raspberry pi 4. This is a test with Google Text to speech (gTTS)")
 tts.save("hello.mp3")
-playsound("./hello.mp3")
+# playsound("./hello.mp3")
+p = vlc.MediaPlayer("hello.mp3")
+p.play()
+time.sleep(30)
+p.stop()
 # alert_sound = pygame.mixer.Sound("hello.mp3")
 # alert_sound.play()
 
