@@ -3,6 +3,8 @@ Final Project for CS437
 
 ## connecting a bluetooth speaker to your pi:
 https://www.okdo.com/project/set-up-a-bluetooth-speaker-with-a-raspberry-pi/
+To get the MAC address of your speaker, you can use your computer (Mac in my case) to scan the BT list with this command:
+`system_profiler SPBluetoothDataType`
 
 1. **Enable Bluetooth:** Make sure the Bluetooth service is enabled on your Raspberry Pi. You can do this by running **`sudo systemctl enable bluetooth`** and **`sudo systemctl start bluetooth`** in the terminal.
 2. **Install Bluetooth Tools:** If not already installed, you may need to install some tools to help manage Bluetooth devices. You can do this by running **`sudo apt-get install bluez pulseaudio-module-bluetooth`** in the terminal.
