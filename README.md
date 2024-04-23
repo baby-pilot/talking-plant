@@ -1,6 +1,8 @@
 # talking-plant
 Final Project for CS437
 
+Make a copy of settings.template.py, modify accordingly and rename as settings.py.
+
 ## connecting a bluetooth speaker to your pi:
 https://www.okdo.com/project/set-up-a-bluetooth-speaker-with-a-raspberry-pi/
 To get the MAC address of your speaker, you can use your computer (Mac in my case) to scan the BT list with this command:
