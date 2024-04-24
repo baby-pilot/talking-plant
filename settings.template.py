@@ -15,3 +15,4 @@ CARRIER_MAP = {
 
 # Object Detection
 INTRUDER_LIST = ["cat", "dog"]
+DETECTION_SENSITIVITY = 0.40
