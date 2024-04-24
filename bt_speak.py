@@ -18,17 +18,16 @@ while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buf
 player.stop()  # Stop player when playback complete
 # can use mpg123 on rasp pi to play the file above manually from command line
 
-class BTSpeaker:
-    def generateAndPlay(self, message) -> None:
-        filename = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.mp3"
-        tts = gTTS(message)
-        tts.save(filename)
-        self.playFromFile(filename)
-        
-    def playFromFile(self, filename) -> None:
-        player = vlc.MediaPlayer(filename)
-        player.play()
-        while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
-            time.sleep(1)  # check every second whether audio is still playing
-        player.stop()  # Stop player when playback complete
-        # can use mpg123 on rasp pi to play the file above manually from command line
+def generateAndPlay(message) -> None:
+    filename = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.mp3"
+    tts = gTTS(message)
+    tts.save(filename)
+    playFromFile(filename)
+    
+def playFromFile(filename) -> None:
+    player = vlc.MediaPlayer(filename)
+    player.play()
+    while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
+        time.sleep(1)  # check every second whether audio is still playing
+    player.stop()  # Stop player when playback complete
+    # can use mpg123 on rasp pi to play the file above manually from command line
