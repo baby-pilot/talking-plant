@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
-from .send_sms import send_txt
-from .bt_speak import speak, AlertMode
+from send_sms import send_txt
+from bt_speak import speak, AlertMode
 
 # Set up GPIO pin
 sensor_pin = 17
