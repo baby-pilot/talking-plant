@@ -16,7 +16,7 @@ try:
             print("Water needed")
         else:
             print("Checked soil. Is wet, no need watering.")
-        time.sleep(10)
+        time.sleep(2)
 except KeyboardInterrupt:
     # clean up resources used to avoid damage to RPi
     GPIO.cleanup()
