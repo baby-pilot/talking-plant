@@ -10,7 +10,7 @@ GPIO.setup(sensor_pin, GPIO.IN, initial=GPIO.LOW)
 
 try:
     while True:
-        if GPIO.input(sensor_pin) == GPIO.LOW:
+        if GPIO.input(sensor_pin) == GPIO.HIGH:
             # Soil is dry! Need watering.
             speak(AlertMode.NEED_WATER)
         else:
