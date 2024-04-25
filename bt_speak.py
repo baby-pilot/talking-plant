@@ -8,9 +8,9 @@ import time
 import vlc
 from datetime import datetime
 
-## --------------------------------------  Generate scripts  ---------------------------------------------
-tts = gTTS("hello, I am raspberry pi 4. This is a test with Google Text to speech (gTTS)")
-tts.save("hello.mp3")
+# ## --------------------------------------  Generate scripts  ---------------------------------------------
+# tts = gTTS("hello, I am raspberry pi 4. This is a test with Google Text to speech (gTTS)")
+# tts.save("hello.mp3")
 
 water_alert = gTTS("Hey this is your plant speaking, please water me.")
 water_alert.save("water_alert.mp3")
