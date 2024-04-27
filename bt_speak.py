@@ -61,6 +61,7 @@ def speak(mode: AlertMode):
 
 def speak_test():
     player = vlc.MediaPlayer("uv_alert.mp3")
+    time.sleep(3)
     player.play()
     while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
         print("playing")
