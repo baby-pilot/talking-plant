@@ -33,8 +33,7 @@ def alert_manager(alert_q, moisture_event, light_event):
             
             # Exponential back-off calculation
             back_off_time = 5 ** alert_count * 10  # 10 seconds base time
-            print(last_time, alert_count)
-            print(time_since_last_alert, back_off_time)
+            print(alert_q)
             if time_since_last_alert >= back_off_time:
                     print("Alerting mode ", alert_mode)
                     speak(alert_mode)
@@ -55,6 +54,7 @@ def alert_manager(alert_q, moisture_event, light_event):
 def sensor_check(sensor_event, alert_q, alert_type):
     while True:
         sensor_event.wait()
+        print("Event ", sensor_event, " received, appending to queue: ", alert_type)
         alert_q.append(alert_type)  # Append new alert to the queue if condition is met
         
 def main():

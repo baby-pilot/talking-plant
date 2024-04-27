@@ -11,8 +11,8 @@ def check_moisture(moisture_event: Event):
     try:
         while True:
             if GPIO.input(sensor_pin) == GPIO.HIGH:
-                print("Water needed, queueing up alert if not already set...")
                 if not moisture_event.is_set():
+                    print("Water needed, queueing up alert")
                     moisture_event.set()
             else:
                 print("Checked soil. Is wet, no need watering.")

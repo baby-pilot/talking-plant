@@ -19,8 +19,8 @@ def check_light(light_event: Event):
             sensor_output = GPIO.input(6)
             print(f"sensor output: {sensor_output}")
             if sensor_output == MODE.HIGH.value:
-                print("More UV rays needed. Queueing up alert if not already set...")
                 if not light_event.is_set():
+                    print("More UV rays needed. Queueing up alert")
                     light_event.set()
             else:
                 print("Enuf sun, no move pls")
