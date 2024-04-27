@@ -48,16 +48,19 @@ def speak(mode: AlertMode):
     audio_file = mode.value
     # setup VLC player
     player = vlc.MediaPlayer(audio_file)
-    time.sleep(2)  # allow VLC time for proper resource management
+    time.sleep(3)
     player.play()
+    print("played")
     while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
         print("playing")
         time.sleep(1)  # check every second whether audio is still playing
 
     player.stop()  # Stop player when playback complete
     time.sleep(1)
+    print("stopped")
     player.release()
     time.sleep(1)
+    print("released")
 # can use mpg123 on rasp pi to play the file above manually from command line
 
 def speak_test():
