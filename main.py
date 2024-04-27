@@ -47,26 +47,26 @@ def alert_manager(alert_q, moisture_event, light_event):
             if not moisture_event.is_set():
                 if AlertMode.NEED_WATER in event_time_dict:
                     del event_time_dict[AlertMode.NEED_WATER]
+
             if not light_event.is_set():
                 if AlertMode.NEED_UV in event_time_dict:
                     del event_time_dict[AlertMode.NEED_UV]
 
-def sensor_check(sensor_event, alert_q, alert_type):
-    while True:
-        sensor_event.wait()
-        print("Event ", sensor_event, " received, appending to queue: ", alert_type)
-        alert_q.append(alert_type)  # Append new alert to the queue if condition is met
+# def sensor_check(sensor_event, alert_q, alert_type):
+#     while True:
+#         sensor_event.wait()
+#         alert_q.append(alert_type)  # Append new alert to the queue if condition is met
         
 def main():
     moisture_event = threading.Event()
     light_event = threading.Event()
 
     # Initialize the moisture thread
-    moisture_check_thread = threading.Thread(target=check_moisture, args=(moisture_event,))
+    moisture_check_thread = threading.Thread(target=check_moisture, args=(moisture_event, alert_q))
     moisture_check_thread.daemon = True
 
     # Initialize the light thread
-    light_check_thread = threading.Thread(target=check_light, args=(light_event,))
+    light_check_thread = threading.Thread(target=check_light, args=(light_event, alert_q))
     light_check_thread.daemon = True
 
     # Start the threads
@@ -74,8 +74,8 @@ def main():
     light_check_thread.start()
 
     # Threads for checking sensors
-    threading.Thread(target=sensor_check, args=(moisture_event, alert_q, AlertMode.NEED_WATER), daemon=True).start()
-    threading.Thread(target=sensor_check, args=(light_event, alert_q, AlertMode.NEED_UV), daemon=True).start()
+    # threading.Thread(target=sensor_check, args=(moisture_event, alert_q, AlertMode.NEED_WATER), daemon=True).start()
+    # threading.Thread(target=sensor_check, args=(light_event, alert_q, AlertMode.NEED_UV), daemon=True).start()
 
 
     # Single alert manager thread
