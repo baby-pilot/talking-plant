@@ -25,7 +25,7 @@ def alert_manager(alert_q, moisture_event, light_event):
             time_since_last_alert = (datetime.now() - last_time).total_seconds()
             
             # Exponential back-off calculation
-            back_off_time = 5 ** alert_count * 10  # 10 seconds base time
+            back_off_time = 10 ** alert_count * 10  # 10 seconds base time
 
             if time_since_last_alert >= back_off_time:
                     print("Alerting mode ", alert_mode)
