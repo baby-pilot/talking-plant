@@ -12,18 +12,20 @@ class MODE(Enum):
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(6, GPIO.IN)
 
-notification_interval = 5  # Interval in seconds between notifications
+notification_interval = 10  # Interval in seconds between notifications
 
 def check_light(light_event: Event, alert_q: deque):
     try:
         while True:
             sensor_output = GPIO.input(6)
-            print(f"sensor output: {sensor_output}")
+            # print(f"sensor output: {sensor_output}")
             if sensor_output == MODE.HIGH.value:
                 if not light_event.is_set():
                     print("More UV rays needed. Queueing up alert")
                     light_event.set()
                     alert_q.append(AlertMode.NEED_UV)
+                else:
+                    print("More UV rays needed, and is already queued.")
             else:
                 print("Enuf sun, no move pls")
                 if light_event.is_set():

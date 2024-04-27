@@ -17,11 +17,14 @@ def check_moisture(moisture_event: Event, alert_q: deque):
                     print("Water needed, queueing up alert")
                     moisture_event.set()
                     alert_q.append(AlertMode.NEED_WATER)
+                else:
+                    print("Water needed, alert already queued")
             else:
                 print("Checked soil. Is wet, no need watering.")
                 if moisture_event.is_set():
                     moisture_event.clear()
-            time.sleep(2)
+                    # clear event time dict here
+            time.sleep(10)
     except KeyboardInterrupt:
         # clean up resources used to avoid damage to RPi
         GPIO.cleanup()
