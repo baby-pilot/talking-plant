@@ -68,5 +68,11 @@ def main():
     # Single alert manager thread
     threading.Thread(target=alert_manager, args=(alert_q, moisture_event, light_event), daemon=True).start()
 
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Program stopped, shutting down...")
+
 if __name__ == '__main__':
     main()
