@@ -3,7 +3,7 @@ execute main script here e.g. run all processes in multiple threads
 '''
 import threading
 import time
-import datetime
+from datetime import datetime
 
 from light_check import check_light
 from moisture_check import check_moisture
@@ -20,15 +20,16 @@ def alert_manager(alert_q, moisture_event, light_event):
             alert_mode = alert_q.popleft()  # Retrieve the next alert and its timestamp
 
             # Check if we should play this alert, or skip based on last played time
-            last_time = event_time_dict.get(alert_mode, datetime.min)
+            # use alert count to generate exponential back-off
+            last_time, alert_count = event_time_dict.get(alert_mode, (datetime.min, 0))
             time_since_last_alert = (datetime.now() - last_time).total_seconds()
             
             # Exponential back-off calculation
-            back_off_time = 2 ** event_time_dict.get(alert_mode, 0) * 10  # 10 seconds base time
+            back_off_time = 2 ** alert_count * 10  # 10 seconds base time
 
             if time_since_last_alert >= back_off_time:
                     speak(alert_mode)
-                    event_time_dict[alert_mode] = datetime.now()  # Update last alert time
+                    event_time_dict[alert_mode] = (datetime.now(), alert_count + 1)  # Update last alert time
             else:
                 print(f"Skipping {alert_mode} due to back off policy.")
         else:
