@@ -40,6 +40,8 @@ def alert_manager(alert_q, moisture_event, light_event):
                     send_txt(txt_alert_dict[alert_mode])
                     event_time_dict[alert_mode] = (datetime.now(), alert_count + 1)  # Update last alert time
                     print(event_time_dict)
+                    print("sleeping 5 seconds to let VLC buffer time")
+                    time.sleep(5)
             else:
                 print(f"Skipping {alert_mode} due to back off policy.")
         else:
