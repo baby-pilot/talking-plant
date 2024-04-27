@@ -35,9 +35,11 @@ def alert_manager(alert_q, moisture_event, light_event):
         else:
             # reset the back-off if corrective action has been taken
             if not moisture_event.is_set():
-                del event_time_dict[AlertMode.NEED_WATER]
+                if AlertMode.NEED_WATER in event_time_dict:
+                    del event_time_dict[AlertMode.NEED_WATER]
             if not light_event.is_set():
-                del event_time_dict[AlertMode.NEED_UV]
+                if AlertMode.NEED_UV in event_time_dict:
+                    del event_time_dict[AlertMode.NEED_UV]
 
 def sensor_check(sensor_event, alert_q, alert_type):
     while True:
