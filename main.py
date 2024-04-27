@@ -7,7 +7,7 @@ import datetime
 
 from light_check import check_light
 from moisture_check import check_moisture
-from object_detection import *
+# from object_detection import *
 from bt_speak import AlertMode, speak
 import collections
 
