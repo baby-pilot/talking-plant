@@ -63,9 +63,14 @@ def speak_test():
     player = vlc.MediaPlayer("uv_alert.mp3")
     time.sleep(3)
     player.play()
+    print("played")
     while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
         print("playing")
         time.sleep(1)  # check every second whether audio is still playing
 
     player.stop()  # Stop player when playback complete
+    time.sleep(1)
+    print("stopped")
     player.release()
+    time.sleep(1)
+    print("released")
