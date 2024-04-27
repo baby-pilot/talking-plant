@@ -49,11 +49,11 @@ def main():
     light_event = threading.Event()
 
     # Initialize the moisture thread
-    moisture_check_thread = threading.Thread(target=check_moisture, args=(moisture_event))
+    moisture_check_thread = threading.Thread(target=check_moisture, args=(moisture_event,))
     moisture_check_thread.daemon = True
 
     # Initialize the light thread
-    light_check_thread = threading.Thread(target=check_light, args=(light_event))
+    light_check_thread = threading.Thread(target=check_light, args=(light_event,))
     light_check_thread.daemon = True
 
     # Start the threads
