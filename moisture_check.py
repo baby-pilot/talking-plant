@@ -1,7 +1,5 @@
 import RPi.GPIO as GPIO
 import time
-from send_sms import send_txt
-from bt_speak import speak, AlertMode
 from threading import Event
 
 def check_moisture(moisture_event: Event):
