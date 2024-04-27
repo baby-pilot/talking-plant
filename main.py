@@ -9,9 +9,16 @@ from light_check import check_light
 from moisture_check import check_moisture
 # from object_detection import *
 from bt_speak import AlertMode, speak
+from send_sms import send_txt
+from google_send_sms import send_txt as g_send_txt
 import collections
 
 event_time_dict = {}
+txt_alert_dict = {
+    AlertMode.NEED_DEFENSE: "It's me, plant, you gotta defend me, I'll be eaten!",
+    AlertMode.NEED_UV: "Hey, it's me again, can you please move me, I need some sunshine.",
+    AlertMode.NEED_WATER: "Hey this is your plant speaking, please water me."
+}
 alert_q = collections.deque()
 
 def alert_manager(alert_q, moisture_event, light_event):
@@ -31,6 +38,7 @@ def alert_manager(alert_q, moisture_event, light_event):
             if time_since_last_alert >= back_off_time:
                     print("Alerting mode ", alert_mode)
                     speak(alert_mode)
+                    send_txt(txt_alert_dict[alert_mode])
                     event_time_dict[alert_mode] = (datetime.now(), alert_count + 1)  # Update last alert time
                     print(event_time_dict)
             else:

@@ -33,7 +33,7 @@ HOST = "smtp-mail.outlook.com"
 
 def send_txt(
     msg: str,
-    subj: str,
+    subj: str="Your Plant",
     num: Union[str, int] = settings.RECEIVER_NUMBER
 ):
     
