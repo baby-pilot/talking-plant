@@ -10,7 +10,7 @@ from moisture_check import check_moisture
 # from object_detection import *
 from bt_speak import AlertMode, speak
 from send_sms import send_txt
-from google_send_sms import send_txt as g_send_txt
+# from google_send_sms import send_txt as g_send_txt
 import collections
 
 event_time_dict = {}
