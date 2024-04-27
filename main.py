@@ -26,11 +26,13 @@ def alert_manager(alert_q, moisture_event, light_event):
             
             # Exponential back-off calculation
             back_off_time = 10 ** alert_count * 10  # 10 seconds base time
+            print(last_time, alert_count)
             print(time_since_last_alert, back_off_time)
             if time_since_last_alert >= back_off_time:
                     print("Alerting mode ", alert_mode)
                     speak(alert_mode)
                     event_time_dict[alert_mode] = (datetime.now(), alert_count + 1)  # Update last alert time
+                    print(event_time_dict)
             else:
                 print(f"Skipping {alert_mode} due to back off policy.")
         else:
