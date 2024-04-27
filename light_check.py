@@ -4,8 +4,8 @@ from enum import Enum
 from threading import Event
 
 class MODE(Enum):
-    HIGH = 0
-    LOW = 1
+    HIGH = 1
+    LOW = 0
 
 
 GPIO.setmode(GPIO.BCM)

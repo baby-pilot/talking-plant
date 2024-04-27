@@ -25,7 +25,7 @@ def alert_manager(alert_q, moisture_event, light_event):
             time_since_last_alert = (datetime.now() - last_time).total_seconds()
             
             # Exponential back-off calculation
-            back_off_time = 10 ** alert_count * 10  # 10 seconds base time
+            back_off_time = 5 ** alert_count * 10  # 10 seconds base time
             print(last_time, alert_count)
             print(time_since_last_alert, back_off_time)
             if time_since_last_alert >= back_off_time:
@@ -39,7 +39,6 @@ def alert_manager(alert_q, moisture_event, light_event):
             # reset the back-off if corrective action has been taken
             if not moisture_event.is_set():
                 if AlertMode.NEED_WATER in event_time_dict:
-                    print("clearning event_time_dict", moisture_event.is_set())
                     del event_time_dict[AlertMode.NEED_WATER]
             if not light_event.is_set():
                 if AlertMode.NEED_UV in event_time_dict:
@@ -49,7 +48,6 @@ def sensor_check(sensor_event, alert_q, alert_type):
     while True:
         sensor_event.wait()
         alert_q.append(alert_type)  # Append new alert to the queue if condition is met
-        # sensor_event.clear()
         
 def main():
     moisture_event = threading.Event()
