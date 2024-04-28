@@ -49,6 +49,11 @@ def detect_objects(self) -> None:
     detector = vision.ObjectDetector.create_from_options(options)
 
     # Continuously capture images from the camera and run inference
+    success, image = cap.read()
+    if not success:
+        sys.exit(
+            'ERROR: Unable to read from webcam. Please verify your webcam settings.'
+        )
     try:
         while cap.isOpened():
             success, image = cap.read()
