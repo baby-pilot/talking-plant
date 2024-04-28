@@ -1,6 +1,6 @@
-'''
+"""
 Implements speaking capability for the plant via bluetooth
-'''
+"""
 
 from gtts import gTTS
 from enum import Enum
@@ -23,6 +23,7 @@ defense_alert.save("defense_alert.mp3")
 
 ## ------------------------------------------------------------------------------------------------------
 
+
 # can use mpg123 on rasp pi to play the file above manually from command line
 class AlertMode(Enum):
     NEED_WATER = "water_alert.mp3"
@@ -35,14 +36,20 @@ def generateAndPlay(message) -> None:
     tts = gTTS(message)
     tts.save(filename)
     playFromFile(filename)
-    
+
+
 def playFromFile(filename) -> None:
     player = vlc.MediaPlayer(filename)
     player.play()
-    while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
+    while player.get_state() in [
+        vlc.State.Playing,
+        vlc.State.Opening,
+        vlc.State.Buffering,
+    ]:
         time.sleep(1)  # check every second whether audio is still playing
     player.stop()  # Stop player when playback complete
     # can use mpg123 on rasp pi to play the file above manually from command line
+
 
 def speak(mode: AlertMode):
     audio_file = mode.value
@@ -51,7 +58,11 @@ def speak(mode: AlertMode):
     time.sleep(3)
     player.play()
     print("played")
-    while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
+    while player.get_state() in [
+        vlc.State.Playing,
+        vlc.State.Opening,
+        vlc.State.Buffering,
+    ]:
         print("playing")
         time.sleep(1)  # check every second whether audio is still playing
 
@@ -61,20 +72,6 @@ def speak(mode: AlertMode):
     player.release()
     time.sleep(1)
     print("released")
+
+
 # can use mpg123 on rasp pi to play the file above manually from command line
-
-def speak_test():
-    player = vlc.MediaPlayer("uv_alert.mp3")
-    time.sleep(3)
-    player.play()
-    print("played")
-    while player.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
-        print("playing")
-        time.sleep(1)  # check every second whether audio is still playing
-
-    player.stop()  # Stop player when playback complete
-    time.sleep(1)
-    print("stopped")
-    player.release()
-    time.sleep(1)
-    print("released")
