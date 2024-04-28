@@ -69,7 +69,7 @@ class ObjectDetector:
 
         # Continuously capture images from the camera and run inference
         try:
-            while not self.destination_reached.is_set() and cap.isOpened():
+            while cap.isOpened():
                 success, image = cap.read()
                 if not success:
                     sys.exit(
