@@ -5,6 +5,8 @@ from threading import Event
 from collections import deque
 from bt_speak import AlertMode
 from utils import IntervalExponentialBackOff
+
+
 class MODE(Enum):
     HIGH = 1
     LOW = 0
@@ -15,6 +17,7 @@ GPIO.setup(6, GPIO.IN)
 
 notification_interval = 10  # Interval in seconds between notifications
 backoff_interval = IntervalExponentialBackOff()
+
 
 def check_light(light_event: Event, alert_q: deque):
     try:
@@ -34,7 +37,7 @@ def check_light(light_event: Event, alert_q: deque):
                 if light_event.is_set():
                     light_event.clear()
                     backoff_interval.reset()
-                
+
             time.sleep(notification_interval)
 
     except KeyboardInterrupt:

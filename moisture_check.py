@@ -8,6 +8,7 @@ from utils import IntervalExponentialBackOff
 notification_interval = 10
 backoff_interval = IntervalExponentialBackOff()
 
+
 def check_moisture(moisture_event: Event, alert_q: deque):
     # Set up GPIO pin
     sensor_pin = 17
