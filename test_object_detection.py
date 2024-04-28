@@ -91,3 +91,6 @@ def detect_objects(self) -> None:
                             )
     except KeyboardInterrupt:
         cap.release()
+
+if __name__ == "__main__":
+    detect_objects()
