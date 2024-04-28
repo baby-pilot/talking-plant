@@ -8,6 +8,7 @@ from datetime import datetime
 
 from light_check import check_light
 from moisture_check import check_moisture
+from object_detection import ObjectDetector
 
 # from object_detection import *
 from bt_speak import AlertMode, speak
@@ -27,12 +28,13 @@ alert_q = collections.deque()
 def main():
     moisture_event = threading.Event()
     light_event = threading.Event()
+    intruder_event = threading.Event()
 
     # Initialize the moisture thread
     moisture_check_thread = threading.Thread(
         target=check_moisture, args=(moisture_event, alert_q)
     )
-    moisture_check_thread.daemon = True
+    moisture_check_thread.daemon = True  # run as daemon so it is stopped when main is stopped
 
     # Initialize the light thread
     light_check_thread = threading.Thread(
@@ -40,9 +42,17 @@ def main():
     )
     light_check_thread.daemon = True
 
+    # Initialize Object detection thread
+    intruder_detection = ObjectDetector(intruder_event)
+    object_detection_thread = threading.Thread(
+        target=intruder_detection.detect_objects, args=(alert_q,)
+    )
+    object_detection_thread.daemon = True
+
     # Start the threads
     moisture_check_thread.start()
     light_check_thread.start()
+    object_detection_thread.start()
 
     try:
         while True:

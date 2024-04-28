@@ -18,15 +18,16 @@
 # limitations under the License.
 
 """Main script to run the object detection routine."""
-import argparse
 import sys
-import time
 
 import cv2
-from settings import INTRUDER_LIST, DETECTION_SENSITIVITY
 from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
+from bt_speak import AlertMode
+from utils import IntervalExponentialBackOff
+
+backoff_interval = IntervalExponentialBackOff()
 
 # import utils_apache as utils  # if you want live video feed
 
@@ -37,28 +38,22 @@ FRAME_WIDTH = 1280
 FRAME_HEIGHT = 720
 NUM_THREADS = 1
 ENABLE_EDGETPU = False
-
+INTRUDER_LIST = ["cat", "dog"]
+DETECTION_SENSITIVITY = 0.40
 
 class ObjectDetector:
-    def __init__(self, notify_event, destination_reached):
+    def __init__(self, notify_event):
         self.notify_event = notify_event
-        self.destination_reached = destination_reached
 
-    def detect_objects(self) -> None:
+    def detect_objects(self, alert_q) -> None:
         """
         Continuously run inference on images acquired from the camera.
         """
-
-        # Variables to calculate FPS
-        counter, fps = 0, 0
-        start_time = time.time()
 
         # Start capturing video input from the camera
         cap = cv2.VideoCapture(CAMERA_ID)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
-
-        fps_avg_frame_count = 10
 
         # Initialize the object detection model
         base_options = core.BaseOptions(
@@ -81,7 +76,6 @@ class ObjectDetector:
                         "ERROR: Unable to read from webcam. Please verify your webcam settings."
                     )
 
-                counter += 1
                 image = cv2.flip(image, 1)
 
                 # Convert the image from BGR to RGB as required by the TFLite model.
@@ -93,7 +87,6 @@ class ObjectDetector:
                 # Run object detection estimation using the model.
                 detection_result = detector.detect(input_tensor)
                 if detection_result:
-                    stopObjectInView = False
                     for detection in detection_result.detections:
                         category = detection.categories[0]
                         category_name = category.category_name
@@ -104,23 +97,18 @@ class ObjectDetector:
                                     "Detected: " + category_name,
                                     "probability: " + str(probability),
                                 )
-                                print("Stopping...")
-                                stopObjectInView = True
-                                self.notify_event.set()
-                    if not stopObjectInView:
-                        print("Resuming...")
-                        self.notify_event.clear()
+                                if not self.notify_event.is_set() or backoff_interval.back_off_passed():
+                                    print("Alerting about intruder")
+                                    self.notify_event.set()
+                                    alert_q.append(AlertMode.NEED_DEFENSE)
+                                    backoff_interval.set()
+                                else:
+                                    print("Intruder alert already queued")
+                            else:
+                                print("Intruder cleared")
+                                if self.notify_event.is_set():
+                                    self.notify_event.clear()
+                                    backoff_interval.reset()
 
-                # Calculate the FPS
-                # end_time = time.time()
-                # elapsed_time = end_time - start_time
-                # if elapsed_time > 1.0:  # Update the FPS every 1 second
-                #     fps = counter / elapsed_time
-                #     # print(f"Frame rate: {fps:.2f} FPS")
-                #     counter = 0
-                #     start_time = time.time()
-
-                # Print the FPS
-                # print("fps: " + str(fps))
-        finally:
+        except KeyboardInterrupt:
             cap.release()
