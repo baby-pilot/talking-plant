@@ -40,6 +40,7 @@ NUM_THREADS = 1
 ENABLE_EDGETPU = False
 INTRUDER_LIST = ["cat", "dog"]
 DETECTION_SENSITIVITY = 0.40
+NOTIFICATION_INTERVAL = 10
 
 class ObjectDetector:
     def __init__(self, notify_event):
@@ -105,10 +106,8 @@ class ObjectDetector:
                                 else:
                                     print("Intruder alert already queued")
                             else:
-                                print("Intruder cleared")
                                 if self.notify_event.is_set():
                                     self.notify_event.clear()
                                     backoff_interval.reset()
-
         except KeyboardInterrupt:
             cap.release()
