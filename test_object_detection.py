@@ -20,7 +20,7 @@ FRAME_HEIGHT = 720
 NUM_THREADS = 1
 ENABLE_EDGETPU = False
 
-def detect_objects(self) -> None:
+def detect_objects() -> None:
     """
     Continuously run inference on images acquired from the camera.
     """
