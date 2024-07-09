@@ -1,6 +1,4 @@
 # talking-plant
-Final Project for CS437
-
 Make a copy of settings.template.py, modify accordingly and rename as settings.py.
 
 ## connecting a bluetooth speaker to your pi:
